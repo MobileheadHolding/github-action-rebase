@@ -6,8 +6,6 @@ const ghClient = new github.GitHub(process.env.GITHUB_TOKEN);
 
 const rebase = () => {};
 
-const 
-
 const run = async () => {
     const context = await github.context;
     owner = core.getInput('owner') || context.payload.repository.full_name.split('/')[0];

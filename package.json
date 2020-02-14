@@ -30,6 +30,7 @@
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
+    "@zeit/ncc": "^0.21.1",
     "husky": "^4.2.0",
     "release-it": "*"
   },
