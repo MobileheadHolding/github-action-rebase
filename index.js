@@ -13,6 +13,7 @@ const run = async () => {
     owner = core.getInput('owner') || context.payload.repository.full_name.split('/')[0];
     repo = core.getInput('repo') || context.payload.repository.full_name.split('/')[1];
     console.log(github)
+    console.log(github.context.payload);
     console.log(github.context.issue())
 
     daysOld = core.getInput('days-old');
