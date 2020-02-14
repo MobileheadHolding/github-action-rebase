@@ -1407,7 +1407,7 @@ const run = async () => {
         head_repo: pr.data.head.repo.full_name,
         head_branch: pr.data.head.ref
     }
-
+    // check if rebaseable
     if (!prInfo.rebaseable) {
         const gif = await getMardownGif(giphy, 'no no!');
         let comment = await ghClient.issues.createComment({
@@ -1417,6 +1417,7 @@ const run = async () => {
             body: `:no_entry_sign: github says this pr is not rebaseable...\n\n${gif}`,
         });
         core.setFailed(comment);
+        process.exit(1);
     } else if (prInfo.merged) {
         const gif = await getMardownGif(giphy, 'what?');
         let comment = await ghClient.issues.createComment({
@@ -1426,6 +1427,7 @@ const run = async () => {
             body: `:man_shrugging: github says this pr is already merged...\n\n${gif}`,
         })
         core.setFailed(comment);
+        process.exit(1);
     }
      // start rebase
     const login_name = context.payload.comment.user.login;
@@ -1451,7 +1453,12 @@ const run = async () => {
             issue_number: pull_number,
             body: `:sun_with_face: successfully rebased!!!\n\n${gif}`+
             `\n<details><summary>Details</summary>\n` +
-            `\n<p>\n\`\`\`bash\n${execLogs}\n\`\`\`\n</p>`
+            `\n<p>\n\n`+
+            `\`\`\`bash\n`+
+            `${execLogs}`+
+            `\n\`\`\`\n`+
+            `</p>\n`+
+            `</details>`
         });
     } catch (error) {
         const gif = await getMardownGif(giphy, 'epic fail');
