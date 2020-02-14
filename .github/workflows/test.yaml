@@ -4,10 +4,15 @@ on:
     types: [created]
 
 jobs:
-  fail_purging_semantic:
+  try_comment:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
       - name: rebase
         uses: MobileheadHolding/github-action-rebase@master
+        with:
+          giphy-key: ${{ secrets.GIPHY_API_KEY }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

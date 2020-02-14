@@ -3,6 +3,10 @@ description: 'rebase prs by entering \"/rebase\" as a comment'
 branding:
   icon: 'git-pull-request'
   color: 'green'
+inputs:
+  giphy-key:
+    required: false
+    description: 'api key for giphy comments'
 outputs:
   error-msg:
     description: 'reason the rebase failed'
