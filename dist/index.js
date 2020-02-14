@@ -509,21 +509,6 @@ const run = async () => {
     console.log(github)
     console.log(github.context.payload);
     console.log(github.context.issue())
-
-    daysOld = core.getInput('days-old');
-    packageNameQuery = core.getInput('package-name-query');
-    packageLimit = core.getInput('package-limit');
-    versionRegex = RegExp(core.getInput('version-regex'));
-    versionLimit = core.getInput('version-limit');
-
-    let versionsToDelete = await getVersionsToDelete();
-    let deletedVersions = [];
-    for (const version of versionsToDelete) {
-        core.debug(`will try to delete ${JSON.stringify(version)}`);
-        await deleteVersion(version);
-        deletedVersions.push(`${version.package}@${version.version}`);
-    }
-    core.setOutput('deletedVersions', deletedVersions.join(','));
 };
 
 run();
