@@ -1,0 +1,51 @@
+{
+  "name": "github-action-rebase",
+  "version": "1.0.0",
+  "description": "rebase prs by entering \"/rebase\" as a comment",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ncc build index.js",
+    "release": "release-it"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MobileheadHolding/github-action-rebase.git"
+  },
+  "keywords": [
+    "action",
+    "github",
+    "registry",
+    "cleanup",
+    "purge"
+  ],
+  "author": "Mobilehead Holding GmbH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MobileheadHolding/github-action-rebase/issues"
+  },
+  "homepage": "https://github.com/MobileheadHolding/github-action-rebase#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.1",
+    "@actions/github": "^2.0.1",
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "husky": "^4.2.0",
+    "release-it": "*"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run build"
+    }
+  },
+  "release-it": {
+    "npm": {
+      "publish": false
+    },
+    "git": {
+      "requireCleanWorkingDir": false,
+      "tagName": "${version}"
+    },
+    "github": false
+  }
+}

@@ -1,0 +1,13 @@
+name: rebase-test
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  fail_purging_semantic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: rebase
+        uses: MobileheadHolding/github-action-rebase@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

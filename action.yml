@@ -1,0 +1,11 @@
+name: 'rebase'
+description: 'rebase prs by entering \"/rebase\" as a comment'
+branding:
+  icon: 'git-pull-request'
+  color: 'green'
+outputs:
+  error-msg:
+    description: 'reason the rebase failed'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
