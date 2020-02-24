@@ -97,6 +97,12 @@ const run = async () => {
     });
    
     try {
+        let pr_close = await ghClient.pulls.update({
+            owner,
+            repo,
+            pull_number,
+            state: 'closed'
+        });
         await rebase({
             user_email: email || `${login_name}@users.noreply.github.com`,
             user_name: process.env.GITHUB_USER_NAME || login_name,
@@ -104,6 +110,12 @@ const run = async () => {
             repo: context.payload.repository.full_name,
             base_branch: prInfo.base_branch,
             head_branch: prInfo.head_branch
+        });
+        let pr_open = await ghClient.pulls.update({
+            owner,
+            repo,
+            pull_number,
+            state: 'open'
         });
         const gif = await getMardownGif(giphy, 'whoop whoop');
         let comment = await ghClient.issues.createComment({
@@ -118,18 +130,6 @@ const run = async () => {
             `\n\`\`\`\n`+
             `</p>\n`+
             `</details>`
-        });
-        let pr_close = await ghClient.pulls.update({
-            owner,
-            repo,
-            pull_number,
-            state: 'closed'
-        });
-        let pr_open = await ghClient.pulls.update({
-            owner,
-            repo,
-            pull_number,
-            state: 'open'
         });
     } catch (error) {
         const gif = await getMardownGif(giphy, 'epic fail');
