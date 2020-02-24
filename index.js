@@ -45,6 +45,8 @@ const getMardownGif = async (giphy, phrase) => {
     return `![${phrase}](${gif.data.image_url})`
 }
 
+const change_pr_status = async args => ghClient.pulls.update(args);
+
 const run = async () => {
     const giphy_key = core.getInput('giphy-key');
     const giphy = require('giphy-api')(giphy_key);
@@ -55,11 +57,12 @@ const run = async () => {
     if (! context.payload.comment.html_url.includes('pull')) {
         core.setFailed(`this is not a pr comment: ${JSON.stringify(context.payload)}`);
     }
-    let pr = await ghClient.pulls.get({
+    const initialPr = {
         owner,
         repo,
         pull_number
-    });
+    }
+    let pr = await ghClient.pulls.get(initialPr);
     const prInfo = {
         rebaseable: pr.data.rebaseable,
         merged: pr.data.merged,
@@ -97,12 +100,7 @@ const run = async () => {
     });
    
     try {
-        let pr_close = await ghClient.pulls.update({
-            owner,
-            repo,
-            pull_number,
-            state: 'closed'
-        });
+        await change_pr_status({ ...initialPr, state: 'closed' })
         await rebase({
             user_email: email || `${login_name}@users.noreply.github.com`,
             user_name: process.env.GITHUB_USER_NAME || login_name,
@@ -110,12 +108,6 @@ const run = async () => {
             repo: context.payload.repository.full_name,
             base_branch: prInfo.base_branch,
             head_branch: prInfo.head_branch
-        });
-        let pr_open = await ghClient.pulls.update({
-            owner,
-            repo,
-            pull_number,
-            state: 'open'
         });
         const gif = await getMardownGif(giphy, 'whoop whoop');
         let comment = await ghClient.issues.createComment({
@@ -147,7 +139,9 @@ const run = async () => {
             `</details>`
         });
         core.setFailed(execLogs);
-    }    
+    } finally {
+        await change_pr_status({ ...initialPr, state: 'open' })
+    }
 };
 
 run();
