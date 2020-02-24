@@ -18,3 +18,4 @@ jobs:
         env:
           GITHUB_USER_NAME: "MobileheadBot"
           GITHUB_USER_TOKEN: ${{ secrets.GITHUB_TOKEN_PRIVATE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
