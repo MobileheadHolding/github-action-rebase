@@ -26,8 +26,8 @@ const rebase = async (args) => {
     const repo_link = `https://${args.user_name}:${args.token}@github.com/${args.repo}.git`
     
     await git(['remote', 'set-url', 'origin', repo_link])
-    await git(['config', '--global', 'user.name', args.user_name ]);
-    await git(['config', '--global', 'user.email', args.user_email ]);
+    await git(['config', '--local', 'user.name', args.user_name ]);
+    await git(['config', '--local', 'user.email', args.user_email ]);
     await git(['remote', 'add', 'fork', repo_link]);
        
     await git(['fetch', 'origin', args.base_branch]);
