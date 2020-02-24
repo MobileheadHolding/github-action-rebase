@@ -1363,7 +1363,7 @@ const git = (args) => {
 
 const rebase = async (args) => {
     console.log(args)
-    const repo_link = `https://${args.login_name}:${args.token}@github.com/${args.repo}.git`
+    const repo_link = `https://${args.user_name}:${args.token}@github.com/${args.repo}.git`
     
     await git(['remote', 'set-url', 'origin', repo_link])
     await git(['config', 'user.name', args.user_name ]);
@@ -1431,15 +1431,14 @@ const run = async () => {
     }
     // start actual rebase
     const login_name = context.payload.comment.user.login;
-    const { name, email } = await ghClient.users.getByUsername({
+    const { email } = await ghClient.users.getByUsername({
         username: login_name
     });
    
     try {
         await rebase({
             user_email: email || `${login_name}@users.noreply.github.com`,
-            user_name: name,
-            login_name: process.env.LOGIN_NAME || login_name,
+            user_name: process.env.GITHUB_USER_NAME || login_name,
             token: process.env.GITHUB_TOKEN,
             repo: context.payload.repository.full_name,
             base_repo: prInfo.base_repo,
