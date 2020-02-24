@@ -1,0 +1,25 @@
+name: pr_test
+
+on:
+  push:
+    branches:
+      - 'dev'
+      - 'master'
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  release_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: echo
+        id: echo
+        run: |
+          echo "great"
