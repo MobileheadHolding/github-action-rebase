@@ -99,7 +99,7 @@ const run = async () => {
         await rebase({
             user_email: email || `${login_name}@users.noreply.github.com`,
             user_name: process.env.GITHUB_USER_NAME || login_name,
-            token: process.env.GITHUB_TOKEN,
+            token: process.env.GITHUB_USER_TOKEN || process.env.GITHUB_TOKEN,
             repo: context.payload.repository.full_name,
             base_branch: prInfo.base_branch,
             head_branch: prInfo.head_branch
