@@ -1366,8 +1366,9 @@ const rebase = async (args) => {
     const repo_link = `https://${args.user_name}:${args.token}@github.com/${args.repo}.git`
     
     await git(['remote', 'set-url', 'origin', repo_link])
-    await git(['config', '--local', 'user.name', args.user_name ]);
+    await git(['config', '--local', 'user.name', `\"${args.user_name}\"`]);
     await git(['config', '--local', 'user.email', args.user_email ]);
+    await git(['config', '--list'])
     await git(['remote', 'add', 'fork', repo_link]);
        
     await git(['fetch', 'origin', args.base_branch]);
@@ -1473,7 +1474,7 @@ const run = async () => {
             `</p>\n`+
             `</details>`
         });
-        core.setFailed(execErrors);
+        core.setFailed(execLogs);
     }
     
 };
