@@ -1366,8 +1366,9 @@ const rebase = async (args) => {
     const repo_link = `https://${args.user_name}:${args.token}@github.com/${args.repo}.git`
     
     await git(['remote', 'set-url', 'origin', repo_link])
-    await git(['config', 'user.name', args.user_name ]);
-    await git(['config', 'user.email', args.user_email ]);
+    await git(['config', '--local', 'user.name', `\"${args.user_name}\"`]);
+    await git(['config', '--local', 'user.email', args.user_email ]);
+    await git(['config', '--list'])
     await git(['remote', 'add', 'fork', repo_link]);
        
     await git(['fetch', 'origin', args.base_branch]);
@@ -1439,10 +1440,8 @@ const run = async () => {
         await rebase({
             user_email: email || `${login_name}@users.noreply.github.com`,
             user_name: process.env.GITHUB_USER_NAME || login_name,
-            token: process.env.GITHUB_TOKEN,
+            token: process.env.GITHUB_USER_TOKEN || process.env.GITHUB_TOKEN,
             repo: context.payload.repository.full_name,
-            base_repo: prInfo.base_repo,
-            head_repo: prInfo.head_repo,
             base_branch: prInfo.base_branch,
             head_branch: prInfo.head_branch
         });
@@ -1475,7 +1474,7 @@ const run = async () => {
             `</p>\n`+
             `</details>`
         });
-        core.setFailed(execErrors);
+        core.setFailed(execLogs);
     }
     
 };
