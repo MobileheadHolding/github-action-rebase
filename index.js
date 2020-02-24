@@ -2,7 +2,9 @@ const core = require('@actions/core');
 const exec = require('@actions/exec');
 const github = require('@actions/github');
 
-const ghClient = new github.GitHub(process.env.GITHUB_TOKEN);
+const github_token = process.env.GITHUB_USER_TOKEN || process.env.GITHUB_TOKEN
+
+const ghClient = new github.GitHub(github_token);
 
 let execLogs = '';
 
@@ -99,7 +101,7 @@ const run = async () => {
         await rebase({
             user_email: email || `${login_name}@users.noreply.github.com`,
             user_name: process.env.GITHUB_USER_NAME || login_name,
-            token: process.env.GITHUB_USER_TOKEN || process.env.GITHUB_TOKEN,
+            token: github_token,
             repo: context.payload.repository.full_name,
             base_branch: prInfo.base_branch,
             head_branch: prInfo.head_branch
