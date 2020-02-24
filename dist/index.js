@@ -1363,11 +1363,11 @@ const git = (args) => {
 
 const rebase = async (args) => {
     console.log(args)
-    const repo_link = `https://x-access-token:${args.token}@github.com/${args.repo}.git`
+    const repo_link = `https://${args.login_name}:${args.token}@github.com/${args.repo}.git`
     
     await git(['remote', 'set-url', 'origin', repo_link])
-    await git(['config', 'user.name', "GitHub Actions Build" ]);
-    await git(['config', 'user.email', "no-reply@nomail.unknown" ]);
+    await git(['config', 'user.name', args.user_name ]);
+    await git(['config', 'user.email', args.user_email ]);
     await git(['remote', 'add', 'fork', repo_link]);
        
     await git(['fetch', 'origin', args.base_branch]);
@@ -1439,6 +1439,7 @@ const run = async () => {
         await rebase({
             user_email: email || `${login_name}@users.noreply.github.com`,
             user_name: name,
+            login_name: process.env.LOGIN_NAME || login_name,
             token: process.env.GITHUB_TOKEN,
             repo: context.payload.repository.full_name,
             base_repo: prInfo.base_repo,
