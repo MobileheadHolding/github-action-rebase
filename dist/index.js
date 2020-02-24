@@ -1459,6 +1459,18 @@ const run = async () => {
             `</p>\n`+
             `</details>`
         });
+        let pr_close = await ghClient.pulls.update({
+            owner,
+            repo,
+            pull_number,
+            state: 'closed'
+        });
+        let pr_open = await ghClient.pulls.update({
+            owner,
+            repo,
+            pull_number,
+            state: 'open'
+        });
     } catch (error) {
         const gif = await getMardownGif(giphy, 'epic fail');
         let comment = await ghClient.issues.createComment({
@@ -1475,8 +1487,7 @@ const run = async () => {
             `</details>`
         });
         core.setFailed(execLogs);
-    }
-    
+    }    
 };
 
 run();
