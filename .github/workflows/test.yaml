@@ -15,4 +15,5 @@ jobs:
         with:
           giphy-key: ${{ secrets.GIPHY_API_KEY }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USER_NAME: "MobileheadBot"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_PRIVATE }}
