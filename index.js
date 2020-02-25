@@ -122,6 +122,7 @@ const run = async () => {
             `</p>\n`+
             `</details>`
         });
+        await setTimeout(() => true, 5000)
         await change_pr_status({ ...initialPr, state: 'closed' })
     } catch (error) {
         const gif = await getMardownGif(giphy, 'epic fail');
