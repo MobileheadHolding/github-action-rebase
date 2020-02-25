@@ -47,6 +47,10 @@ const getMardownGif = async (giphy, phrase) => {
 
 const change_pr_status = async args => ghClient.pulls.update(args);
 
+const timeout = async ms => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const run = async () => {
     const giphy_key = core.getInput('giphy-key');
     const giphy = require('giphy-api')(giphy_key);
@@ -123,7 +127,7 @@ const run = async () => {
             `</details>`
         });
         await change_pr_status({ ...initialPr, state: 'closed' });
-        await setTimeout(() => true, 5000);
+        await timeout(5000);
     } catch (error) {
         const gif = await getMardownGif(giphy, 'epic fail');
         let comment = await ghClient.issues.createComment({
