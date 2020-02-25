@@ -1462,7 +1462,8 @@ const run = async () => {
             `</p>\n`+
             `</details>`
         });
-        await change_pr_status({ ...initialPr, state: 'closed' })
+        await change_pr_status({ ...initialPr, state: 'closed' });
+        await setTimeout(() => true, 5000);
     } catch (error) {
         const gif = await getMardownGif(giphy, 'epic fail');
         let comment = await ghClient.issues.createComment({
