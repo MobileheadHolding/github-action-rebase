@@ -1440,7 +1440,6 @@ const run = async () => {
     });
    
     try {
-        await change_pr_status({ ...initialPr, state: 'closed' })
         await rebase({
             user_email: email || `${login_name}@users.noreply.github.com`,
             user_name: process.env.GITHUB_USER_NAME || login_name,
@@ -1463,6 +1462,7 @@ const run = async () => {
             `</p>\n`+
             `</details>`
         });
+        await change_pr_status({ ...initialPr, state: 'closed' })
     } catch (error) {
         const gif = await getMardownGif(giphy, 'epic fail');
         let comment = await ghClient.issues.createComment({
