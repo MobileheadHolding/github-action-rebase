@@ -4,7 +4,7 @@ const github = require('@actions/github');
 
 const ghClient = new github.GitHub(process.env.GITHUB_TOKEN);
 
-let execLogs = '';
+let errorLogs, execLogs = '';
 
 const execOptions = {
     listeners: {
@@ -13,6 +13,7 @@ const execOptions = {
         },
         stderr: (data) => {
             execLogs += data.toString();
+            errorLogs += data.toString();
         }
     }
 }
@@ -112,6 +113,9 @@ const run = async () => {
             username,
             ...prInfo
         });
+        
+        if (errorLogs) throw Error(execLogs);
+
         const gif = await getMardownGif(giphy, 'whoop whoop');
         await ghClient.issues.createComment({
             owner,
@@ -132,7 +136,7 @@ const run = async () => {
             body: gifComment(
                 `:sun_with_face: successfully rebased!!!`, 
                 gif, 
-                `${error}\n${execLogs}`
+                `${error}`
             ),
         });
         core.setFailed(execLogs);
