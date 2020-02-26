@@ -1430,7 +1430,7 @@ const run = async () => {
         })
         core.setFailed('already merged');
         process.exit(1);
-    } else if (!prInfo.rebaseable) {
+    } else if (prInfo.rebaseable != 'true') {
         const gif = await getMardownGif(giphy, 'no no!');
         await ghClient.issues.createComment({
             owner,
