@@ -85,7 +85,7 @@ const run = async () => {
             body: gifComment(
                     `:man_shrugging: github says this pr is already merged...`, 
                     gif, 
-                    JSON.stringify(pr.data)
+                    JSON.stringify(pr.data, null, 2)
                 ),
         })
         core.setFailed('already merged');
@@ -99,7 +99,7 @@ const run = async () => {
             body: gifComment(
                 `:no_entry_sign: github says this pr is not rebaseable...`, 
                 gif, 
-                JSON.stringify(pr.data)
+                JSON.stringify(pr.data, null, 2)
             ),
         });
         core.setFailed('not rebaseable');
