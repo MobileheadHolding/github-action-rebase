@@ -26,7 +26,7 @@ const rebase = async (args) => {
     await git(['remote', 'add', 'fork', `https://github.com/${args.repo}.git`]);
     
     await git(['config', '--local', 'user.name', args.user_name ]);
-    await git(['config', '--local', 'user.email', args.user_email ]);
+    await git(['config', '--local', 'user.email', args.email ]);
 
     await git(['fetch', 'origin', args.base_branch]);
     await git(['fetch', 'fork', args.head_branch]);
@@ -88,12 +88,12 @@ const run = async () => {
     }
     
     const user_name = context.payload.comment.user.login;
-    const { email: user_email } = await ghClient.users.getByUsername({ user_name });
+    const { email } = await ghClient.users.getByUsername({ user_name });
     // start actual rebase
     try {
         await rebase({
             repo: context.payload.repository.full_name,
-            user_email,
+            email,
             user_name,
             ...prInfo
         });
@@ -121,7 +121,7 @@ const run = async () => {
             `\n<details><summary>Details</summary>\n` +
             `\n<p>\n\n`+
             `\`\`\`bash\n`+
-            `${execLogs}`+
+            `${error}\n${execLogs}`+
             `\n\`\`\`\n`+
             `</p>\n`+
             `</details>`
