@@ -31,7 +31,7 @@ const rebase = async (args) => {
     
     await git(['rebase', `origin/${args.base_branch}`]);
     
-    await git(['push', '--force-with-lease']);
+    await git(['push', '--force-with-lease', 'origin', args.head_branch]);
 };
 
 const getMardownGif = async (giphy, phrase) => {
@@ -114,8 +114,6 @@ const run = async () => {
             ...prInfo
         });
         
-        if (errorLogs) throw Error(execLogs);
-
         const gif = await getMardownGif(giphy, 'whoop whoop');
         await ghClient.issues.createComment({
             owner,
@@ -134,7 +132,7 @@ const run = async () => {
             repo,
             issue_number: pull_number,
             body: gifComment(
-                `:sun_with_face: successfully rebased!!!`, 
+                `:exclamation: i tried the rebase and failed...`, 
                 gif, 
                 `${error}`
             ),
