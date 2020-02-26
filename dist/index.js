@@ -1365,7 +1365,7 @@ const rebase = async (args) => {
     console.log(args)
     await git(['remote', 'add', 'fork', `https://github.com/${args.repo}.git`]);
     
-    await git(['config', '--local', 'user.name', args.user_name ]);
+    await git(['config', '--local', 'user.name', args.username ]);
     await git(['config', '--local', 'user.email', args.email ]);
 
     await git(['fetch', 'origin', args.base_branch]);
@@ -1446,14 +1446,14 @@ const run = async () => {
         process.exit(1);
     }
     
-    const user_name = context.payload.comment.user.login;
-    const { email } = await ghClient.users.getByUsername({ user_name });
+    const username = context.payload.comment.user.login;
+    const { email } = await ghClient.users.getByUsername({ username });
     // start actual rebase
     try {
         await rebase({
             repo: context.payload.repository.full_name,
             email,
-            user_name,
+            username,
             ...prInfo
         });
         const gif = await getMardownGif(giphy, 'whoop whoop');
