@@ -1382,6 +1382,17 @@ const getMardownGif = async (giphy, phrase) => {
     return `![${phrase}](${gif.data.image_url})`
 }
 
+const gifComment = (comment, gif, details) => {
+    return `${comment}\n\n${gif}`+
+            `\n<details><summary>Details</summary>\n` +
+            `\n<p>\n\n`+
+            `\`\`\`bash\n`+
+            `${details}`+
+            `\n\`\`\`\n`+
+            `</p>\n`+
+            `</details>`
+}
+
 const run = async () => {
     const giphy_key = core.getInput('giphy-key');
     const giphy = __webpack_require__(819)(giphy_key);
@@ -1411,7 +1422,11 @@ const run = async () => {
             owner,
             repo,
             issue_number: pull_number,
-            body: `:man_shrugging: github says this pr is already merged...\n\n${gif}`,
+            body: gifComment(
+                    `:man_shrugging: github says this pr is already merged...`, 
+                    gif, 
+                    JSON.stringify(prInfo)
+                ),
         })
         core.setFailed('already merged');
         process.exit(1);
@@ -1421,7 +1436,11 @@ const run = async () => {
             owner,
             repo,
             issue_number: pull_number,
-            body: `:no_entry_sign: github says this pr is not rebaseable...\n\n${gif}`,
+            body: gifComment(
+                `:no_entry_sign: github says this pr is not rebaseable...`, 
+                gif, 
+                JSON.stringify(prInfo)
+            ),
         });
         core.setFailed('not rebaseable');
         process.exit(1);
@@ -1442,14 +1461,11 @@ const run = async () => {
             owner,
             repo,
             issue_number: pull_number,
-            body: `:sun_with_face: successfully rebased!!!\n\n${gif}`+
-            `\n<details><summary>Details</summary>\n` +
-            `\n<p>\n\n`+
-            `\`\`\`bash\n`+
-            `${execLogs}`+
-            `\n\`\`\`\n`+
-            `</p>\n`+
-            `</details>`
+            body: gifComment(
+                `:sun_with_face: successfully rebased!!!`, 
+                gif, 
+                execLogs
+            ),
         });
     } catch (error) {
         const gif = await getMardownGif(giphy, 'epic fail');
@@ -1457,14 +1473,11 @@ const run = async () => {
             owner,
             repo,
             issue_number: pull_number,
-            body: `:exclamation: i tried the rebase and failed...\n\n${gif}`+
-            `\n<details><summary>Details</summary>\n` +
-            `\n<p>\n\n`+
-            `\`\`\`bash\n`+
-            `${error}\n${execLogs}`+
-            `\n\`\`\`\n`+
-            `</p>\n`+
-            `</details>`
+            body: gifComment(
+                `:sun_with_face: successfully rebased!!!`, 
+                gif, 
+                `${error}\n${execLogs}`
+            ),
         });
         core.setFailed(execLogs);
     }
