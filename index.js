@@ -26,6 +26,8 @@ const rebase = async (args) => {
     await git(['config', '--local', 'user.name', args.username ]);
     await git(['config', '--local', 'user.email', args.email ]);
 
+    await git(['checkout', args.base_branch])
+
     await git(['fetch', 'origin', args.base_branch ]);
     
     await git(['rebase', `origin/${args.base_branch}`]);
