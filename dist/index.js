@@ -1344,7 +1344,7 @@ const github = __webpack_require__(469);
 
 const ghClient = new github.GitHub(process.env.GITHUB_TOKEN);
 
-let errorLogs, execLogs = '';
+let execLogs = '';
 
 const execOptions = {
     listeners: {
@@ -1353,7 +1353,6 @@ const execOptions = {
         },
         stderr: (data) => {
             execLogs += data.toString();
-            errorLogs += data.toString();
         }
     }
 }
@@ -1474,7 +1473,7 @@ const run = async () => {
             body: gifComment(
                 `:exclamation: i tried the rebase and failed...`, 
                 gif, 
-                `${error}`
+                `${error}:\n${execLogs}`
             ),
         });
         core.setFailed(execLogs);
