@@ -8,14 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN_PRIVATE }}
       - name: rebase
         uses: MobileheadHolding/github-action-rebase@master
         with:
           giphy-key: ${{ secrets.GIPHY_API_KEY }}
         env:
-          GITHUB_USER_NAME: "MobileheadBot"
-          GITHUB_USER_TOKEN: ${{ secrets.GITHUB_TOKEN_PRIVATE }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
