@@ -23,18 +23,14 @@ const git = (args) => {
 
 const rebase = async (args) => {
     console.log(args)
-    await git(['remote', 'add', 'fork', `https://github.com/${args.repo}.git`]);
-    
     await git(['config', '--local', 'user.name', args.username ]);
     await git(['config', '--local', 'user.email', args.email ]);
 
-    await git(['fetch', 'origin', args.base_branch]);
-    await git(['fetch', 'fork', args.head_branch]);
+    await git(['fetch', `origin/${args.base_branch}`]);
     
-    await git(['checkout', '-b', args.head_branch, `fork/${args.head_branch}`]);
     await git(['rebase', `origin/${args.base_branch}`]);
     
-    await git(['push', '--force-with-lease', 'fork', args.head_branch]);
+    await git(['push', '--force-with-lease']);
 };
 
 const getMardownGif = async (giphy, phrase) => {
