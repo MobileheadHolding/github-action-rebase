@@ -84,13 +84,13 @@ const run = async () => {
             issue_number: pull_number,
             body: gifComment(
                     `:man_shrugging: github says this pr is already merged...`, 
-                    gif, 
-                    JSON.stringify(pr.data, null, 2)
+                    gif,
+                    JSON.stringify(pr.data, null, 2),
                 ),
         })
         core.setFailed('already merged');
         process.exit(1);
-    } else if (prInfo.rebaseable != 'true') {
+    } else if (prInfo.rebaseable == 'false') {
         const gif = await getMardownGif(giphy, 'no no!');
         await ghClient.issues.createComment({
             owner,
@@ -98,8 +98,8 @@ const run = async () => {
             issue_number: pull_number,
             body: gifComment(
                 `:no_entry_sign: github says this pr is not rebaseable...`, 
-                gif, 
-                JSON.stringify(pr.data, null, 2)
+                gif,
+                JSON.stringify(pr.data, null, 2),
             ),
         });
         core.setFailed('not rebaseable');
