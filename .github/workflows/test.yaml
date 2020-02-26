@@ -12,6 +12,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN_PRIVATE }}
           ref: ${{ github.head_ref || github.ref }}
+          fetch-depth: 0
 
       - name: rebase
         uses: MobileheadHolding/github-action-rebase@master
