@@ -87,10 +87,10 @@ const run = async () => {
         process.exit(1);
     }
     
+    const user_name = context.payload.comment.user.login;
+    const { email: user_email } = await ghClient.users.getByUsername({ user_name });
     // start actual rebase
     try {
-        const user_name = context.payload.comment.user.login;
-        const { email: user_email } = await ghClient.users.getByUsername({ user_name });
         await rebase({
             repo: context.payload.repository.full_name,
             user_email,
