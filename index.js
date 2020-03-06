@@ -39,7 +39,7 @@ const rebase = async (args) => {
 
 const getMardownGif = async (giphy, phrase) => {
     const gif = await giphy.random(phrase);
-    return `![${phrase}](${gif.data.image_url})`
+    return `![${phrase}](${gif.data.fixed_height_small_url})`
 }
 
 const gifComment = (comment, gif, details) => {
